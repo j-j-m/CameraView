@@ -56,10 +56,7 @@ public class CameraViewController: UIViewController, AVCaptureMetadataOutputObje
             
             metadataOutput.metadataObjectTypes = [
                 .upce,
-                .ean13,
-                .qr,
-                .aztec,
-                .code128
+                .ean13
             ]
             
         } else {
