@@ -55,8 +55,11 @@ public class CameraViewController: UIViewController, AVCaptureMetadataOutputObje
             // Set barcode type for which to scan: EAN-13.
             
             metadataOutput.metadataObjectTypes = [
-//                .upce,
-                .ean13
+                .upce,
+                .ean13,
+                .qr,
+                .aztec,
+                .code128
             ]
             
         } else {
