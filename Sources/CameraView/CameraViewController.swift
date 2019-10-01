@@ -104,7 +104,7 @@ public class CameraViewController: UIViewController, AVCaptureMetadataOutputObje
         session = nil
     }
     
-    func captureOutput(captureOutput: AVCaptureOutput!, didOutputMetadataObjects metadataObjects: [AnyObject]!, fromConnection connection: AVCaptureConnection!) {
+    public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
         // Get the first object from the metadataObjects array.
         
