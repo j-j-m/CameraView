@@ -147,14 +147,14 @@ public class CameraViewController: UIViewController, AVCaptureMetadataOutputObje
             
             if trimmedCodeString.hasPrefix("0") && trimmedCodeString.count > 1 {
                 trimmedCodeNoZero = String(trimmedCodeString.dropFirst())
-                
+                print("found upc \(trimmedCodeNoZero)")
                 // Send the doctored UPC to DataService.searchAPI()
                 
 //                DataService.searchAPI(trimmedCodeNoZero)
             } else {
                 
                 // Send the doctored EAN to DataService.searchAPI()
-                
+                print("found ean \(trimmedCodeString)")
 //                DataService.searchAPI(trimmedCodeString)
             }
             
