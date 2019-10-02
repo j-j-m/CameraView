@@ -10,8 +10,19 @@ import AVFoundation
 
 public class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
+    var coordinator: CameraView.Coordinator
+    
     var session: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
+    
+    required init(_ coordinator: CameraView.Coordinator) {
+        self.coordinator = coordinator
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override public func viewDidLoad() {
         super.viewDidLoad()
@@ -50,7 +61,7 @@ public class CameraViewController: UIViewController, AVCaptureMetadataOutputObje
             
             // Send captured data to the delegate object via a serial queue.
             
-            metadataOutput.setMetadataObjectsDelegate(self, queue: .main)
+            metadataOutput.setMetadataObjectsDelegate(coordinator, queue: .main)
             
             // Set barcode type for which to scan: EAN-13.
             
@@ -103,64 +114,64 @@ public class CameraViewController: UIViewController, AVCaptureMetadataOutputObje
     
     public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
         
-        // Get the first object from the metadataObjects array.
-        
-        if let barcodeData = metadataObjects.first {
-            
-            // Turn it into machine readable code
-            
-            let barcodeReadable = barcodeData as? AVMetadataMachineReadableCodeObject;
-            
-            if let readableCode = barcodeReadable?.stringValue {
-                
-                // Send the barcode as a string to barcodeDetected()
-                
-                barcodeDetected(code: readableCode);
-            }
-            
-            // Vibrate the device to give the user some feedback.
-            
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            
-            // Avoid a very buzzy device.
-            
-            session.stopRunning()
-        }
+//        // Get the first object from the metadataObjects array.
+//
+//        if let barcodeData = metadataObjects.first {
+//
+//            // Turn it into machine readable code
+//
+//            let barcodeReadable = barcodeData as? AVMetadataMachineReadableCodeObject;
+//
+//            if let readableCode = barcodeReadable?.stringValue {
+//
+//                // Send the barcode as a string to barcodeDetected()
+//
+//                barcodeDetected(code: readableCode);
+//            }
+//
+//            // Vibrate the device to give the user some feedback.
+//
+//            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+//
+//            // Avoid a very buzzy device.
+//
+//            session.stopRunning()
+//        }
     }
     
-    func barcodeDetected(code: String) {
-        
-        // Let the user know we've found something.
-        
-        let alert = UIAlertController(title: "Found a Barcode!", message: code, preferredStyle: UIAlertController.Style.alert)
-        alert.addAction(UIAlertAction(title: "Search", style: .destructive, handler: { action in
-            
-            // Remove the spaces.
-            
-            let trimmedCode = code.trimmingCharacters(in: .whitespaces)
-            
-            // EAN or UPC?
-            // Check for added "0" at beginning of code.
-            
-            let trimmedCodeString = "\(trimmedCode)"
-            var trimmedCodeNoZero: String
-            
-            if trimmedCodeString.hasPrefix("0") && trimmedCodeString.count > 1 {
-                trimmedCodeNoZero = String(trimmedCodeString.dropFirst())
-                print("found upc \(trimmedCodeNoZero)")
-                // Send the doctored UPC to DataService.searchAPI()
-                
-//                DataService.searchAPI(trimmedCodeNoZero)
-            } else {
-                
-                // Send the doctored EAN to DataService.searchAPI()
-                print("found ean \(trimmedCodeString)")
-//                DataService.searchAPI(trimmedCodeString)
-            }
-            
-            self.navigationController?.popViewController(animated: true)
-        }))
-        
-        self.present(alert, animated: true, completion: nil)
-    }
+//    func barcodeDetected(code: String) {
+//        
+//        // Let the user know we've found something.
+//        
+//        let alert = UIAlertController(title: "Found a Barcode!", message: code, preferredStyle: UIAlertController.Style.alert)
+//        alert.addAction(UIAlertAction(title: "Search", style: .destructive, handler: { action in
+//            
+//            // Remove the spaces.
+//            
+//            let trimmedCode = code.trimmingCharacters(in: .whitespaces)
+//            
+//            // EAN or UPC?
+//            // Check for added "0" at beginning of code.
+//            
+//            let trimmedCodeString = "\(trimmedCode)"
+//            var trimmedCodeNoZero: String
+//            
+//            if trimmedCodeString.hasPrefix("0") && trimmedCodeString.count > 1 {
+//                trimmedCodeNoZero = String(trimmedCodeString.dropFirst())
+//                print("found upc \(trimmedCodeNoZero)")
+//                // Send the doctored UPC to DataService.searchAPI()
+//                
+////                DataService.searchAPI(trimmedCodeNoZero)
+//            } else {
+//                
+//                // Send the doctored EAN to DataService.searchAPI()
+//                print("found ean \(trimmedCodeString)")
+////                DataService.searchAPI(trimmedCodeString)
+//            }
+//            
+//            self.navigationController?.popViewController(animated: true)
+//        }))
+//        
+//        self.present(alert, animated: true, completion: nil)
+//    }
 }
