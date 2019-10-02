@@ -3,9 +3,9 @@ import AVFoundation
 
 public struct CameraView: UIViewControllerRepresentable {
     
-    @ObservedObject public var scanner: Scanner
+    @ObservedObject public var scanner: MetadataScanner
     
-    init(scanner: Scanner = Scanner()) {
+    init(scanner: MetadataScanner = MetadataScanner()) {
         self.scanner = scanner
     }
     
