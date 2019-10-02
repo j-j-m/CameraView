@@ -3,10 +3,10 @@ import AVFoundation
 
 public struct CameraView: UIViewControllerRepresentable {
     
-    public init() {}
+    @Binding public var metadata: AVMetadataObject?
     
     public func makeCoordinator() -> Coordinator {
-        Coordinator()
+        Coordinator(self)
     }
     
     public func makeUIViewController(context: UIViewControllerRepresentableContext<CameraView>) -> CameraViewController {
@@ -16,29 +16,20 @@ public struct CameraView: UIViewControllerRepresentable {
     public func updateUIViewController(_ uiViewController: CameraViewController, context: UIViewControllerRepresentableContext<CameraView>) {}
     
     public class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
-            public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
-                // Get the first object from the metadataObjects array.
-                       
-                       if let barcodeData = metadataObjects.first {
-                           
-                           // Turn it into machine readable code
-                           
-                           let barcodeReadable = barcodeData as? AVMetadataMachineReadableCodeObject;
-                           
-                           if let readableCode = barcodeReadable?.stringValue {
-                               
-                               // Send the barcode as a string to barcodeDetected()
-                               
-    //                           barcodeDetected(code: readableCode);
-                            print("Barcode Detected \(readableCode)")
-                           }
-                           
-                           // Vibrate the device to give the user some feedback.
-                           
-                           AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-                           
-
-                       }
-            }
+        
+        let parent: CameraView
+        
+        init(_ parent: CameraView) {
+            self.parent = parent
         }
+        
+        public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
+            // Get the first object from the metadataObjects array.
+            
+            if let meta = metadataObjects.first {
+                parent.metadata = meta
+            }
+            
+        }
+    }
 }
