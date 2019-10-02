@@ -12,6 +12,6 @@ public class MetadataScanner: ObservableObject {
     
     @Published public var capturedMetadata: [AVMetadataObject] = []
     
-    public init()
+    public init() {}
     
 }
