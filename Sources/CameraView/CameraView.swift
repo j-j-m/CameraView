@@ -5,7 +5,7 @@ public struct CameraView: UIViewControllerRepresentable {
     
     @ObservedObject public var scanner: MetadataScanner
     
-    init(scanner: MetadataScanner = MetadataScanner()) {
+    public init(scanner: MetadataScanner = MetadataScanner()) {
         self.scanner = scanner
     }
     
