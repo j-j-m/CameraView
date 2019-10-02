@@ -3,7 +3,11 @@ import AVFoundation
 
 public struct CameraView: UIViewControllerRepresentable {
     
-    @Binding public var metadata: AVMetadataObject?
+    @ObservedObject public var scanner: Scanner
+    
+    init(scanner: Scanner = Scanner()) {
+        self.scanner = scanner
+    }
     
     public func makeCoordinator() -> Coordinator {
         Coordinator(self)
@@ -26,9 +30,7 @@ public struct CameraView: UIViewControllerRepresentable {
         public func metadataOutput(_ output: AVCaptureMetadataOutput, didOutput metadataObjects: [AVMetadataObject], from connection: AVCaptureConnection) {
             // Get the first object from the metadataObjects array.
             
-            if let meta = metadataObjects.first {
-                parent.metadata = meta
-            }
+            parent.scanner.capturedMetadata = metadataObjects
             
         }
     }
