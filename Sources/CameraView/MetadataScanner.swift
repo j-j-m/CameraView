@@ -8,7 +8,7 @@
 import Combine
 import AVFoundation
 
-public class MetadataScanner: ObservableObject {
+open class MetadataScanner: ObservableObject {
     
     @Published public var capturedMetadata: [AVMetadataObject] = []
     
