@@ -34,10 +34,6 @@ public class VisionCameraViewController: UIViewController, AVCaptureVideoDataOut
         fatalError("init(coder:) has not been implemented")
     }
     
-    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
-        // to be implemented in the subclass
-    }
-    
     override public func viewDidLoad() {
         super.viewDidLoad()
         setupAVCapture()
@@ -142,6 +138,21 @@ public class VisionCameraViewController: UIViewController, AVCaptureVideoDataOut
     
     public func captureOutput(_ captureOutput: AVCaptureOutput, didDrop didDropSampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
         // print("frame dropped")
+    }
+    
+    public func captureOutput(_ output: AVCaptureOutput, didOutput sampleBuffer: CMSampleBuffer, from connection: AVCaptureConnection) {
+        guard let pixelBuffer = CMSampleBufferGetImageBuffer(sampleBuffer) else {
+            return
+        }
+        
+        let exifOrientation = exifOrientationFromDeviceOrientation()
+        
+        let imageRequestHandler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, orientation: exifOrientation, options: [:])
+        do {
+            try imageRequestHandler.perform(self.requests)
+        } catch {
+            print(error)
+        }
     }
     
     public func exifOrientationFromDeviceOrientation() -> CGImagePropertyOrientation {
