@@ -11,7 +11,7 @@ import Vision
 open class VisionScanner: ObservableObject {
     
     let model: VNCoreMLModel?
-//    @Published public var capturedMetadata: [AVMetadataObject] = []
+    @Published public var capturedResults: [Any] = []
     
     public init(model: VNCoreMLModel? = nil) {
         self.model = model

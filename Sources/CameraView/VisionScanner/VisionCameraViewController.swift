@@ -45,30 +45,30 @@ public class VisionCameraViewController: UIViewController, AVCaptureVideoDataOut
     }
     
     @discardableResult
-       func setupVision() -> NSError? {
-           // Setup Vision parts
-           let error: NSError! = nil
-           
+    func setupVision() -> NSError? {
+        // Setup Vision parts
+        let error: NSError! = nil
+        
         guard let visionModel = coordinator.parent.scanner.model else {
-               return NSError(domain: "VisionObjectRecognitionViewController", code: -1, userInfo: [NSLocalizedDescriptionKey: "Model file is missing"])
-           }
-           do {
-               let objectRecognition = VNCoreMLRequest(model: visionModel, completionHandler: { (request, error) in
-                   DispatchQueue.main.async(execute: {
-                       // perform all the UI updates on the main queue
-                       if let results = request.results {
-                            print("got results")
-//                           self.drawVisionRequestResults(results)
-                       }
-                   })
-               })
-               self.requests = [objectRecognition]
-           } catch let error as NSError {
-               print("Model loading went wrong: \(error)")
-           }
-           
-           return error
-       }
+            return NSError(domain: "VisionObjectRecognitionViewController", code: -1, userInfo: [NSLocalizedDescriptionKey: "Model file is missing"])
+        }
+        do {
+            let objectRecognition = VNCoreMLRequest(model: visionModel, completionHandler: { (request, error) in
+                DispatchQueue.main.async(execute: {
+                    // perform all the UI updates on the main queue
+                    if let results = request.results {
+                        print("got results")
+                        self.coordinator.parent.scanner.capturedResults = results
+                    }
+                })
+            })
+            self.requests = [objectRecognition]
+        } catch let error as NSError {
+            print("Model loading went wrong: \(error)")
+        }
+        
+        return error
+    }
     
     func setupAVCapture() {
         var deviceInput: AVCaptureDeviceInput!
