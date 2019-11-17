@@ -8,14 +8,14 @@
 import UIKit
 import AVFoundation
 
-public class CameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
+public class MetadataCameraViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
-    var coordinator: CameraView.Coordinator
+    var coordinator: MetadataCameraView.Coordinator
     
     var session: AVCaptureSession!
     var previewLayer: AVCaptureVideoPreviewLayer!
     
-    required init(_ coordinator: CameraView.Coordinator) {
+    required init(_ coordinator: MetadataCameraView.Coordinator) {
         self.coordinator = coordinator
         super.init(nibName: nil, bundle: nil)
     }

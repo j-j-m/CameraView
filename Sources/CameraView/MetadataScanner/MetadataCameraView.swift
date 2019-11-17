@@ -1,7 +1,7 @@
 import SwiftUI
 import AVFoundation
 
-public struct CameraView: UIViewControllerRepresentable {
+public struct MetadataCameraView: UIViewControllerRepresentable {
     
     @ObservedObject public var scanner: MetadataScanner
     
@@ -13,17 +13,17 @@ public struct CameraView: UIViewControllerRepresentable {
         Coordinator(self)
     }
     
-    public func makeUIViewController(context: UIViewControllerRepresentableContext<CameraView>) -> CameraViewController {
-        return CameraViewController(context.coordinator)
+    public func makeUIViewController(context: UIViewControllerRepresentableContext<MetadataCameraView>) -> MetadataCameraViewController {
+        return MetadataCameraViewController(context.coordinator)
     }
     
-    public func updateUIViewController(_ uiViewController: CameraViewController, context: UIViewControllerRepresentableContext<CameraView>) {}
+    public func updateUIViewController(_ uiViewController: MetadataCameraViewController, context: UIViewControllerRepresentableContext<MetadataCameraView>) {}
     
     public class Coordinator: NSObject, AVCaptureMetadataOutputObjectsDelegate {
         
-        let parent: CameraView
+        let parent: MetadataCameraView
         
-        init(_ parent: CameraView) {
+        init(_ parent: MetadataCameraView) {
             self.parent = parent
         }
         
